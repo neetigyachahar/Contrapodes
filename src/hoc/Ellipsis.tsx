@@ -16,7 +16,7 @@ const Ellipsis: FC<EllipsisProps> = ({
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     if (!children) return null
     const isEllipsisReqrd = children.length > maxLength
-    let ellipsisedChilren = children;
+    let ellipsisedChilren = children
     if ((isEllipsisReqrd && isMobile) ||
         (isEllipsisReqrd && !isMobile && !mobileViewOnly))
         ellipsisedChilren = `${children.substr(0, maxLength)}…`

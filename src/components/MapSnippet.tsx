@@ -42,7 +42,7 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
     useEffect(() => {
         if (mapRef && mapRef.current) {
             if (places.length !== 1) {
-                let bounds = new google.maps.LatLngBounds();
+                let bounds = new google.maps.LatLngBounds()
                 places.forEach(place => {
                     bounds.extend({
                         lat: place.geometry.location.lat(),
@@ -70,7 +70,7 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                     initialCenter={places[0]}
                 >
                     {places.map((place, i) => {
-                        return <Marker key={i} position={place.geometry.location} />;
+                        return <Marker key={i} position={place.geometry.location} />
                     })}
                 </Map>
             </Box>
@@ -83,7 +83,7 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                         primary={places[0].name}
                         secondary={
                             <Box>
-                                <Box>{places[0].formatted_address}</Box>
+                                <Box>{places[0].formatted_address ?? ''}</Box>
                                 <Box>
                                     {places[0].geometry.location.lat().toFixed(6)},&nbsp;
                                     {places[0].geometry.location.lng().toFixed(6)}

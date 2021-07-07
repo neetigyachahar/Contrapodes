@@ -1,7 +1,7 @@
 import { FC, useState, useContext } from 'react'
-import { PlacesContext } from '../contexts/PlacesContext';
-import { makeStyles } from "@material-ui/core/styles";
-import { Theme } from '@material-ui/core';
+import { PlacesContext } from '../contexts/PlacesContext'
+import { makeStyles } from "@material-ui/core/styles"
+import { Theme } from '@material-ui/core'
 import {
     Box,
     Button,
@@ -12,7 +12,7 @@ import {
     IconButton,
     Typography
 } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
 import SearchAndSelectPlaces from "../components/SearchAndSelectPlaces"
 import deepCopy from 'clone-deep'
 import SelectedPlaces from '../components/SelectedPlaces'
@@ -34,28 +34,28 @@ const useStyles = makeStyles((theme: Theme) => ({
         top: theme.spacing(1),
         color: theme.palette.grey[500],
     },
-}));
+}))
 
 const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
     const classes = useStyles()
     const places = useContext(PlacesContext)
-    const [newPlaces, setNewPlaces] = useState<any[]>([]);
+    const [newPlaces, setNewPlaces] = useState<any[]>([])
     const [newPlacesLoading, setNewPlacesLoading] = useState(false)
 
     const addNewPlaceHandler = (place: any) => {
         const alreadyAdded = newPlaces.filter(
             newPlace => newPlace.place_id === place.place_id)
-        if (alreadyAdded.length) return;
+        if (alreadyAdded.length) return
         let updatedNewPlaces = deepCopy(newPlaces)
         updatedNewPlaces = [place].concat(updatedNewPlaces)
-        setNewPlaces(updatedNewPlaces);
+        setNewPlaces(updatedNewPlaces)
     }
 
     const newPlaceDeleteHandler = (place_id: string) => {
         let updatedNewPlaces = deepCopy(newPlaces)
         updatedNewPlaces = updatedNewPlaces.filter(
             newPlace => newPlace.place_id !== place_id)
-        setNewPlaces(updatedNewPlaces);
+        setNewPlaces(updatedNewPlaces)
     }
 
     const setNewPlacesLoadingHandler =
@@ -68,6 +68,11 @@ const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
         history.goBack()
     }
 
+    const removePreSelectedPlaceHandler = (place_id: string) => {
+        places.updatePlaces(
+            places.places.filter(place => place.place_id !== place_id))
+    }
+
     return (
         <Dialog
             fullWidth={true}
@@ -78,7 +83,11 @@ const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
         >
             <DialogTitle id="aria-label-dialog-title" disableTypography >
                 <Typography variant="h6">Add places</Typography>
-                <IconButton aria-label="close" className={classes.closeButton} onClick={closeHandler}>
+                <IconButton
+                    aria-label="close"
+                    className={classes.closeButton}
+                    onClick={closeHandler}
+                >
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
@@ -93,6 +102,8 @@ const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
                         places={newPlaces}
                         newPlacesLoading={newPlacesLoading}
                         newPlaceDelete={newPlaceDeleteHandler}
+                        preSelectedPlaces={places.places}
+                        removePreSelectedPlace={removePreSelectedPlaceHandler}
                     />
                 </Box>
             </DialogContent>

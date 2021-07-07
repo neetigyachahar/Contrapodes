@@ -14,15 +14,18 @@ import {
     DialogTitle,
     DialogContent,
     IconButton,
-    LinearProgress
+    LinearProgress,
+    Divider
 } from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
 import MapSnippet from '../components/MapSnippet'
 
 export interface SelectedPlacesProps {
     places: any[]
     newPlaceDelete: (place_id: string) => void
-    newPlacesLoading: boolean
+    newPlacesLoading: boolean,
+    preSelectedPlaces: any[],
+    removePreSelectedPlace: (place_id: string) => void
 }
 
 const useStyles = makeStyles(({ spacing, palette }: Theme) => ({
@@ -54,12 +57,14 @@ const useStyles = makeStyles(({ spacing, palette }: Theme) => ({
         justifyContent: 'center',
         alignItems: 'center'
     }
-}));
+}))
 
 const SelectedPlaces: FC<SelectedPlacesProps> = ({
     places,
     newPlaceDelete,
-    newPlacesLoading
+    newPlacesLoading,
+    preSelectedPlaces,
+    removePreSelectedPlace
 }) => {
     const classes = useStyles()
     const theme = useTheme()
@@ -106,6 +111,37 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                             </Typography>}
                             onClick={() => openMapHandler(place.place_id)}
                             onDelete={() => newPlaceDelete(place.place_id)}
+                            variant="outlined"
+                        />
+                    </Tooltip>
+                ))}
+            </Box>
+            <Divider />
+            <Typography variant="caption" color="textSecondary">Selected places</Typography>
+            <Box
+                component="ul"
+                display="flex"
+                flexWrap="wrap"
+                className={classes.chipContainer}
+            >
+                {preSelectedPlaces.map(place => (
+                    <Tooltip
+                        key={place.place_id}
+                        title={place.formatted_address}
+                        aria-label={place.formatted_address}
+                        placement="top"
+                    >
+                        <Chip
+                            className={classes.chip}
+                            component="li"
+                            avatar={<Avatar alt={place.name} src={place.icon} />}
+                            label={<Typography color="textPrimary">
+                                <Ellipsis mobileViewOnly >
+                                    {place.name}
+                                </Ellipsis>
+                            </Typography>}
+                            onClick={() => openMapHandler(place.place_id)}
+                            onDelete={() => removePreSelectedPlace(place.place_id)}
                             variant="outlined"
                         />
                     </Tooltip>

@@ -20,4 +20,4 @@ ReactDOM.render(
     </Contexts>
   </React.StrictMode>,
   document.getElementById('root')
-);
+)

@@ -13,4 +13,4 @@ export default GoogleApiWrapper({
     apiKey: MAPS_API_KEY,
     libraries: [...MAPS_LIB_NAMES],
     LoadingContainer
-})(MapsApiWrapper);
+})(MapsApiWrapper)

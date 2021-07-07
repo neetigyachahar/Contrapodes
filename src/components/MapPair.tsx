@@ -13,7 +13,7 @@ import {
     Avatar,
     Typography
 } from '@material-ui/core'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import TrendingFlatOutlinedIcon from '@material-ui/icons/TrendingFlatOutlined'
 import Ellipsis from '../hoc/Ellipsis'
 import MapSnippet from './MapSnippet'
@@ -91,7 +91,7 @@ const MapPair: FC<MapPairProps> = ({ place, antipode }) => {
                         </Typography>}
                         {... (!isMobile ? {
                             secondary: <Box>
-                                <Box>{place.formatted_address}</Box>
+                                <Box>{place.formatted_address ?? ''}</Box>
                                 <Box>
                                     {place.geometry.location.lat().toFixed(6)},&nbsp;
                                     {place.geometry.location.lng().toFixed(6)}
@@ -124,7 +124,7 @@ const MapPair: FC<MapPairProps> = ({ place, antipode }) => {
                         </Typography>}
                         {... (!isMobile ? {
                             secondary: <Box>
-                                <Box>{antipode.formatted_address}</Box>
+                                <Box>{antipode.formatted_address ?? ''}</Box>
                                 <Box>
                                     {antipode.geometry.location.lat().toFixed(6)},&nbsp;
                                     {antipode.geometry.location.lng().toFixed(6)}

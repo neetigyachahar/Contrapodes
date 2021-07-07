@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react'
-import { PlacesContext } from '../contexts/PlacesContext';
+import { PlacesContext } from '../contexts/PlacesContext'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
     Box,
@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined'
 import AddPlacesBtn from '../components/AddPlacesBtn'
-import MapPair from 'src/components/MapPair';
+import PlacesAntipodesList from '../containers/PlacesAntipodesList'
 
 const useStyles = makeStyles(({ spacing, breakpoints }: Theme) =>
     createStyles({
@@ -35,13 +35,13 @@ const useStyles = makeStyles(({ spacing, breakpoints }: Theme) =>
             justifyContent: 'center'
         }
     }),
-);
+)
 
 
 const Home: FC = () => {
-    const classes = useStyles();
+    const classes = useStyles()
     const places = useContext(PlacesContext)
-    console.log(places.places)
+
     return (
         <>
             <AppBar position="sticky">
@@ -73,65 +73,16 @@ const Home: FC = () => {
             {/* <MapSnippet places={places.places} /> */}
             <Box className={classes.mapsListCont}>
                 <Box className={classes.mapsList}>
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
-                        />
-                    }
-                    {places.places.length >= 2 &&
-                        <MapPair
-                            place={places.places[0]}
-                            antipode={places.places[1]}
+                    {places.places.length > 0 &&
+                        <PlacesAntipodesList
+                            key={places.places.length}
+                            places={places.places}
                         />
                     }
                 </Box>
             </Box>
         </>
     )
-
 }
 
 export default Home

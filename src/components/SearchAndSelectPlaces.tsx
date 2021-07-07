@@ -23,16 +23,16 @@ const useStyles = makeStyles(() => ({
     container: {
         // flex: 1
     }
-}));
+}))
 
 const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace, setNewPlacesLoading }) => {
-    const classes = useStyles();
-    const [location, setLocation] = useState('');
+    const classes = useStyles()
+    const [location, setLocation] = useState('')
     const placesServiceRef = useRef(new window.google.maps.places.PlacesService(
         document.createElement("div")
-    ));
+    ))
 
-    const handleChange = (location: string) => setLocation(location);
+    const handleChange = (location: string) => setLocation(location)
 
     const handleSelect = (location: string, placeId: string) => {
         setLocation(location)
@@ -40,14 +40,14 @@ const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace, setNewPla
         const request = {
             placeId,
             fields: ["place_id", "formatted_address", "name", "icon", "geometry"]
-        };
+        }
         placesServiceRef.current.getDetails(request, (place, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && place) {
                 setNewPlacesLoading(false)
-                addNewPlace(place);
+                addNewPlace(place)
             }
-        });
-    };
+        })
+    }
 
     return (
         <PlacesAutocomplete
@@ -95,7 +95,7 @@ const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace, setNewPla
                 </Box>
             )}
         </PlacesAutocomplete>
-    );
+    )
 }
 
-export default SearchPlaces;
+export default SearchPlaces

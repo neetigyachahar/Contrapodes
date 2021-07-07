@@ -1,11 +1,11 @@
 import { FC } from 'react'
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles'
 import {
     Box,
     TextField,
     InputAdornment
 } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@material-ui/icons/Search'
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(({ palette, breakpoints }: Theme) =>
