@@ -23,6 +23,8 @@ const useStyles = makeStyles(({ spacing }: Theme) => ({
 
     },
     chipContainer: {
+        margin: 0,
+        padding: 0,
         paddingTop: spacing(1),
         overflow: 'auto'
     },
@@ -37,16 +39,23 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({ places, newPlaceDelete }) => 
     return (
         <Box className={classes.container}>
             <Typography variant="caption" color="textSecondary">Selected Places</Typography>
-            <Box display="flex" flexWrap="wrap" className={classes.chipContainer}>
+            <Box
+                component="ul"
+                display="flex"
+                flexWrap="wrap"
+                className={classes.chipContainer}
+            >
                 {console.log(places)}
                 {places.map(place => (
                     <Tooltip
+                        key={place.place_id}
                         title={place.formatted_address}
                         aria-label={place.formatted_address}
                         placement="top"
                     >
                         <Chip
                             className={classes.chip}
+                            component="li"
                             avatar={<Avatar alt={place.name} src={place.icon} />}
                             label={
                                 <Typography color="textPrimary">
