@@ -1,20 +1,16 @@
 import { makeStyles } from "@material-ui/core/styles"
 import { FC, useState, useRef } from 'react'
 import PlacesAutocomplete, { Suggestion } from "react-places-autocomplete"
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
     Box,
-    List,
     ListItem,
     ListItemAvatar,
     ListItemText,
     Avatar,
-    TextField,
-    LinearProgress,
-    Typography,
-    Theme
+    TextField
 } from '@material-ui/core'
-import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined';
+import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 export interface SearchPlacesProps {
