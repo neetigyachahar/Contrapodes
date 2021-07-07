@@ -13,7 +13,8 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    IconButton
+    IconButton,
+    LinearProgress
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import MapSnippet from '../components/MapSnippet'
@@ -21,6 +22,7 @@ import MapSnippet from '../components/MapSnippet'
 export interface SelectedPlacesProps {
     places: any[]
     newPlaceDelete: (place_id: string) => void
+    newPlacesLoading: boolean
 }
 
 const useStyles = makeStyles(({ spacing, palette }: Theme) => ({
@@ -54,7 +56,11 @@ const useStyles = makeStyles(({ spacing, palette }: Theme) => ({
     }
 }));
 
-const SelectedPlaces: FC<SelectedPlacesProps> = ({ places, newPlaceDelete }) => {
+const SelectedPlaces: FC<SelectedPlacesProps> = ({
+    places,
+    newPlaceDelete,
+    newPlacesLoading
+}) => {
     const classes = useStyles()
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -75,13 +81,13 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({ places, newPlaceDelete }) => 
     return (
         <Box className={classes.container}>
             <Typography variant="caption" color="textSecondary">Selected Places</Typography>
+            {newPlacesLoading && <LinearProgress />}
             <Box
                 component="ul"
                 display="flex"
                 flexWrap="wrap"
                 className={classes.chipContainer}
             >
-                {console.log(places)}
                 {places.map(place => (
                     <Tooltip
                         key={place.place_id}

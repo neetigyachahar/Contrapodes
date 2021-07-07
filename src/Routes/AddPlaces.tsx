@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from '@material-ui/core';
 import {
@@ -15,6 +15,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import SearchAndSelectPlaces from "../components/SearchAndSelectPlaces"
 import deepCopy from 'clone-deep'
 import SelectedPlaces from '../components/SelectedPlaces'
+import { RouteComponentProps } from 'react-router-dom'
+
+export interface AddPlacesProps extends RouteComponentProps<any> {
+
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -30,9 +35,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const AddPlaces = () => {
+const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
     const classes = useStyles()
     const [newPlaces, setNewPlaces] = useState<any[]>([]);
+    const [newPlacesLoading, setNewPlacesLoading] = useState(false)
 
     const addNewPlaceHandler = (place: any) => {
         const alreadyAdded = newPlaces.filter(
@@ -50,9 +56,10 @@ const AddPlaces = () => {
         setNewPlaces(updatedNewPlaces);
     }
 
-    const handleClose = () => {
+    const setNewPlacesLoadingHandler =
+        (loading: boolean) => setNewPlacesLoading(loading)
 
-    };
+    const handleClose = () => history.goBack()
 
     return (
         <Dialog
@@ -69,19 +76,21 @@ const AddPlaces = () => {
                 </IconButton>
             </DialogTitle>
             <DialogContent className={classes.root} dividers>
-                <Box display="flex" flexDirection="column" style={{height: '100%'}}>
+                <Box display="flex" flexDirection="column" style={{ height: '100%' }}>
                     <SearchAndSelectPlaces
                         newPlaces={newPlaces}
+                        setNewPlacesLoading={setNewPlacesLoadingHandler}
                         addNewPlace={addNewPlaceHandler}
                     />
                     <SelectedPlaces
                         places={newPlaces}
+                        newPlacesLoading={newPlacesLoading}
                         newPlaceDelete={newPlaceDeleteHandler}
                     />
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="primary">
                     Add
                 </Button>
             </DialogActions>

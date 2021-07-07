@@ -7,7 +7,9 @@ import {
     Button,
     IconButton
 } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined'
+import AddPlacesBtn from '../components/AddPlacesBtn'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -45,7 +47,8 @@ const Home: FC = () => {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-
+            <Link to="/AddPlaces" >Click here</Link>
+            <AddPlacesBtn />
         </>
     )
 

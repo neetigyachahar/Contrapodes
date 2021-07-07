@@ -1,27 +1,24 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { FC } from 'react'
 
-import antipodes from 'antipodes'
+// import antipodes from 'antipodes'
+
+import { Route } from 'react-router-dom'
 
 import AddPlaces from './Routes/AddPlaces'
 
 import Home from './Routes/Home'
 
-const App = (props: any) => {
-  console.log(props)
-
-
-  console.log(antipodes({
-    longitude: -73.951442,
-    latitude: 40.698470
-  }));
-
+const App: FC = (props: any) => {
+  // console.log(antipodes({
+  //   longitude: -73.951442,
+  //   latitude: 40.698470
+  // }));
 
   return (
-    <div className="App" >
-      <AddPlaces />
-      {/* <Home /> */}
-    </div >
+    <>
+      <Route exact path="/AddPlaces" component={AddPlaces} />
+      <Route path="/" component={Home} />
+    </>
   );
 }
 

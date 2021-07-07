@@ -16,6 +16,7 @@ type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 export interface SearchPlacesProps {
     newPlaces: any[]
     addNewPlace: (place: any) => void
+    setNewPlacesLoading: (loading: boolean) => void
 }
 
 const useStyles = makeStyles(() => ({
@@ -24,7 +25,7 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace }) => {
+const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace, setNewPlacesLoading }) => {
     const classes = useStyles();
     const [location, setLocation] = useState('');
     const placesServiceRef = useRef(new window.google.maps.places.PlacesService(
@@ -34,16 +35,16 @@ const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace }) => {
     const handleChange = (location: string) => setLocation(location);
 
     const handleSelect = (location: string, placeId: string) => {
-        console.log(location, placeId)
         setLocation(location)
+        setNewPlacesLoading(true)
         const request = {
             placeId,
             fields: ["place_id", "formatted_address", "name", "icon", "geometry"]
         };
         placesServiceRef.current.getDetails(request, (place, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+                setNewPlacesLoading(false)
                 addNewPlace(place);
-                console.log(place.geometry, place?.geometry?.location?.lat());
             }
         });
     };
@@ -69,7 +70,8 @@ const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace }) => {
                                     placeholder: "Search Places ...",
                                     label: "Search places...",
                                     variant: "outlined",
-                                    fullWidth: true
+                                    fullWidth: true,
+                                    autoFocus: true
                                 })}
                             />)}
                         renderOption={(option) => (
