@@ -80,7 +80,7 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
 
     return (
         <Box className={classes.container}>
-            <Typography variant="caption" color="textSecondary">Selected Places</Typography>
+            <Typography variant="caption" color="textSecondary">Selected new places</Typography>
             {newPlacesLoading && <LinearProgress />}
             <Box
                 component="ul"

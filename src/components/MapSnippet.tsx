@@ -25,8 +25,8 @@ const useStyles = makeStyles(({ breakpoints }: Theme) => ({
         maxWidth: '400px',
         maxHeight: '400px',
         [breakpoints.down('sm')]: {
-            width: '100%',
-            height: '100%'
+            width: '100vw',
+            height: '100vw'
         }
     },
     mapBox: {

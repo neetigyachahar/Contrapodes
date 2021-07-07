@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC, useState, useContext } from 'react'
+import { PlacesContext } from '../contexts/PlacesContext';
 import { makeStyles } from "@material-ui/core/styles";
 import { Theme } from '@material-ui/core';
 import {
@@ -37,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
     const classes = useStyles()
+    const places = useContext(PlacesContext)
     const [newPlaces, setNewPlaces] = useState<any[]>([]);
     const [newPlacesLoading, setNewPlacesLoading] = useState(false)
 
@@ -59,19 +61,24 @@ const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
     const setNewPlacesLoadingHandler =
         (loading: boolean) => setNewPlacesLoading(loading)
 
-    const handleClose = () => history.goBack()
+    const closeHandler = () => history.goBack()
+
+    const addNewPlacesHandler = () => {
+        places.updatePlaces(newPlaces.concat(places.places))
+        history.goBack()
+    }
 
     return (
         <Dialog
             fullWidth={true}
             maxWidth={'md'}
-            onClose={handleClose}
+            onClose={closeHandler}
             aria-labelledby="aria-label-dialog-title"
             open={true}
         >
             <DialogTitle id="aria-label-dialog-title" disableTypography >
                 <Typography variant="h6">Add places</Typography>
-                <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+                <IconButton aria-label="close" className={classes.closeButton} onClick={closeHandler}>
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
@@ -90,7 +97,7 @@ const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={addNewPlacesHandler} color="primary">
                     Add
                 </Button>
             </DialogActions>

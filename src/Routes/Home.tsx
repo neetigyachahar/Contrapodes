@@ -1,54 +1,134 @@
-import { FC } from 'react'
+import { FC, useContext } from 'react'
+import { PlacesContext } from '../contexts/PlacesContext';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import {
+    Box,
     AppBar,
     Toolbar,
     Typography,
-    Button,
     IconButton
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
 import ExploreOutlinedIcon from '@material-ui/icons/ExploreOutlined'
 import AddPlacesBtn from '../components/AddPlacesBtn'
+import MapPair from 'src/components/MapPair';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(({ spacing, breakpoints }: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
         },
         homeButton: {
-            marginRight: theme.spacing(2),
+            marginRight: spacing(2),
         },
         title: {
             flexGrow: 1,
         },
+        mapsList: {
+            width: '70%',
+            [breakpoints.down('sm')]: {
+                width: '100%'
+            }
+        },
+        mapsListCont: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+        }
     }),
 );
 
 
 const Home: FC = () => {
     const classes = useStyles();
-
+    const places = useContext(PlacesContext)
+    console.log(places.places)
     return (
         <>
-            <AppBar position="static">
+            <AppBar position="sticky">
                 <Toolbar>
                     <IconButton
                         edge="start"
                         className={classes.homeButton}
                         color="inherit"
-                        aria-label="Contradopes"
+                        aria-label="Contrapodes"
                     >
                         <ExploreOutlinedIcon fontSize="large" />
                     </IconButton>
                     <Typography variant="h4" className={classes.title}>
-                        Contradopes
+                        Contrapodes
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {/* <Button color="inherit">Login</Button> */}
                 </Toolbar>
             </AppBar>
-            <Link to="/AddPlaces" >Click here</Link>
+            <Box m={2}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+            >
+                <Typography variant="h4">
+                    Find antipodes of places in just few clicks!
+                </Typography>
+            </Box>
             <AddPlacesBtn />
+            {/* <MapSnippet places={places.places} /> */}
+            <Box className={classes.mapsListCont}>
+                <Box className={classes.mapsList}>
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                    {places.places.length >= 2 &&
+                        <MapPair
+                            place={places.places[0]}
+                            antipode={places.places[1]}
+                        />
+                    }
+                </Box>
+            </Box>
         </>
     )
 
