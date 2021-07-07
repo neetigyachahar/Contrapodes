@@ -69,7 +69,7 @@ const AddPlaces = () => {
                 </IconButton>
             </DialogTitle>
             <DialogContent className={classes.root} dividers>
-                <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column" style={{overflow: 'hidden', height: '100%'}}>
                     <SearchAndSelectPlaces
                         newPlaces={newPlaces}
                         addNewPlace={addNewPlaceHandler}

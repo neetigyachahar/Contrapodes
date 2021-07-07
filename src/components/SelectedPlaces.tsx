@@ -16,12 +16,18 @@ export interface SelectedPlacesProps {
 }
 
 const useStyles = makeStyles(({ spacing }: Theme) => ({
-    chip: {
-        margin: spacing(0, 1)
+    container: {
+        flex: 1,
+        paddingTop: spacing(1),
+        // overflow: 'hidden'
+
     },
     chipContainer: {
-        paddingBottom: spacing(1),
+        paddingTop: spacing(1),
         overflow: 'auto'
+    },
+    chip: {
+        margin: spacing(1)
     }
 }));
 
@@ -29,28 +35,30 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({ places, newPlaceDelete }) => 
     const classes = useStyles()
 
     return (
-        <Box display="flex" flexShrink={0} className={classes.chipContainer}>
+        <Box className={classes.container}>
             <Typography variant="caption" color="textSecondary">Selected Places</Typography>
-            {console.log(places)}
-            {places.map(place => (
-                <Tooltip
-                    title={place.formatted_address}
-                    aria-label={place.formatted_address}
-                    placement="top"
-                >
-                    <Chip
-                        className={classes.chip}
-                        avatar={<Avatar alt={place.name} src={place.icon} />}
-                        label={
-                            <Typography color="textPrimary">
-                                {place.name}
-                            </Typography>
-                        }
-                        onDelete={() => newPlaceDelete(place.place_id)}
-                        variant="outlined"
-                    />
-                </Tooltip>
-            ))}
+            <Box display="flex" flexWrap="wrap" className={classes.chipContainer}>
+                {console.log(places)}
+                {places.map(place => (
+                    <Tooltip
+                        title={place.formatted_address}
+                        aria-label={place.formatted_address}
+                        placement="top"
+                    >
+                        <Chip
+                            className={classes.chip}
+                            avatar={<Avatar alt={place.name} src={place.icon} />}
+                            label={
+                                <Typography color="textPrimary">
+                                    {place.name}
+                                </Typography>
+                            }
+                            onDelete={() => newPlaceDelete(place.place_id)}
+                            variant="outlined"
+                        />
+                    </Tooltip>
+                ))}
+            </Box>
         </Box>
     )
 
