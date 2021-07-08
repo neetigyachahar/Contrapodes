@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core/styles"
 import { Map, Marker } from 'google-maps-react'
 import randomColor from 'randomcolor'
 import { Antipode } from '../containers/PlacesAntipodesList'
+import { useTheme } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import {
     Box,
     Paper,
@@ -42,6 +44,8 @@ const useStyles = makeStyles(({ breakpoints }: Theme) => ({
 const MapSnippet: FC<MapSinppetProps> = ({ places, antipodes, disableTitle = false }) => {
     const mapRef = useRef<any | null>(null)
     const classes = useStyles()
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
     useEffect(() => {
         if (mapRef && mapRef.current) {
             let bounds = new google.maps.LatLngBounds()
@@ -100,15 +104,22 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, antipodes, disableTitle = fal
             }
         }
     }, [places])
-    console.log(antipodes)
     return (
         <Paper
             variant="outlined"
             className={classes.container}
             style={{
                 ...(antipodes ? {
-                    width: '80vw',
-                    height: '26vw',
+                    ...(isMobile ?
+                        {
+                            width: '100vw',
+                            height: '50vw',
+                        } :
+                        {
+                            width: '80vw',
+                            height: '26vw',
+                        }
+                    ),
                     maxWidth: '100%',
                     maxHeight: '100%'
                 } : {})
