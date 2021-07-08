@@ -1,12 +1,13 @@
 import { FC, useState, useEffect, useRef, useCallback } from 'react'
 import MapPair from '../components/MapPair'
+import MapSnippet from '../components/MapSnippet'
 import getAntipode from 'antipodes'
 
 export interface PlacesAntipodesListProps {
     places: google.maps.places.PlaceResult[]
 }
 
-interface Antipode {
+export interface Antipode {
     org_place_id: string
     antipode: google.maps.places.PlaceResult
 }
@@ -79,14 +80,24 @@ const PlacesAntipodesList: FC<PlacesAntipodesListProps> = ({
     }
 
     return (
-        <>{places.length === antipodes.length && places.map(place => (
-            <MapPair
-                place={place}
-                antipode={antipodes.filter(antipode =>
-                    antipode.org_place_id === place.place_id
-                )[0].antipode}
+        <>{places.length === antipodes.length && (
+            <MapSnippet
+                places={places}
+                antipodes={antipodes}
             />
-        ))}
+        )
+        }
+            {places.length === antipodes.length && (
+                places.map(place => (
+                    <MapPair
+                        place={place}
+                        antipode={antipodes.filter(antipode =>
+                            antipode.org_place_id === place.place_id
+                        )[0].antipode}
+                    />
+                ))
+            )
+            }
         </>
     )
 }

@@ -1,6 +1,8 @@
 import { FC, useEffect, useRef } from 'react'
 import { makeStyles } from "@material-ui/core/styles"
 import { Map, Marker } from 'google-maps-react'
+import randomColor from 'randomcolor'
+import { Antipode } from '../containers/PlacesAntipodesList'
 import {
     Box,
     Paper,
@@ -14,6 +16,7 @@ import {
 export interface MapSinppetProps {
     disableTitle?: boolean
     places: google.maps.places.PlaceResult[]
+    antipodes?: Antipode[]
 }
 
 const useStyles = makeStyles(({ breakpoints }: Theme) => ({
@@ -36,28 +39,81 @@ const useStyles = makeStyles(({ breakpoints }: Theme) => ({
     }
 }))
 
-const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
-    const mapRef = useRef<any| null>(null)
+const MapSnippet: FC<MapSinppetProps> = ({ places, antipodes, disableTitle = false }) => {
+    const mapRef = useRef<any | null>(null)
     const classes = useStyles()
     useEffect(() => {
         if (mapRef && mapRef.current) {
-            if (places.length !== 1) {
-                let bounds = new google.maps.LatLngBounds()
-                places.forEach(place => {
-                    bounds.extend({
-                        lat: place.geometry?.location?.lat() ?? 0,
-                        lng: place.geometry?.location?.lng() ?? 0
-                    })
+            let bounds = new google.maps.LatLngBounds()
+            let allPlaces = places
+            if (antipodes)
+                allPlaces = allPlaces.concat(antipodes.map(antipode => antipode.antipode))
+            allPlaces.forEach(place => {
+                bounds.extend({
+                    lat: place.geometry?.location?.lat() ?? 0,
+                    lng: place.geometry?.location?.lng() ?? 0
                 })
-                mapRef?.current?.map.setCenter(bounds.getCenter())
-                mapRef?.current?.map.fitBounds(bounds)
-            } else {
-                mapRef?.current?.map.setCenter(places[0]?.geometry?.location)
+            })
+            mapRef?.current?.map.setCenter(bounds.getCenter())
+            mapRef?.current?.map.fitBounds(bounds)
+            if (allPlaces.length === 1) {
+                const zoomChangeBoundsListener =
+                    google.maps.event.addListenerOnce(mapRef?.current?.map, 'bounds_changed', () => {
+                        mapRef?.current?.map.setZoom(8);
+                    });
+                setTimeout(function () { google.maps.event.removeListener(zoomChangeBoundsListener) }, 1000);
+            }
+
+            if (antipodes) {
+
+                const lineSymbol = {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+                };
+
+                // Create the polyline and add the symbol via the 'icons' property.
+                places.forEach(place => {
+                    let antipode = antipodes.filter(antipode =>
+                        antipode.org_place_id === place.place_id
+                    )[0].antipode
+                    new google.maps.Polyline({
+                        path: [
+                            {
+                                lat: place.geometry?.location?.lat() ?? 0,
+                                lng: place.geometry?.location?.lng() ?? 0
+                            },
+                            {
+                                lat: antipode.geometry?.location?.lat() ?? 0,
+                                lng: antipode.geometry?.location?.lng() ?? 0
+                            }
+                        ],
+                        icons: [
+                            {
+                                icon: lineSymbol,
+                                offset: "100%"
+                            },
+                        ],
+                        strokeColor: randomColor(),
+                        map: mapRef.current.map,
+                    });
+                })
+
             }
         }
     }, [places])
+    console.log(antipodes)
     return (
-        <Paper variant="outlined" className={classes.container}>
+        <Paper
+            variant="outlined"
+            className={classes.container}
+            style={{
+                ...(antipodes ? {
+                    width: '80vw',
+                    height: '26vw',
+                    maxWidth: '100%',
+                    maxHeight: '100%'
+                } : {})
+            }}
+        >
             <Box className={classes.mapBox}>
                 <Map
                     ref={mapRef}
@@ -69,7 +125,24 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                     zoom={8}
                 >
                     {places.map((place, i) => {
-                        return <Marker key={i} position={place.geometry?.location} />
+                        return <Marker
+                            key={i}
+                            title={place.name ?? ''}
+                            position={place.geometry?.location}
+
+                        />
+                    })}
+                    {antipodes && antipodes.map((place, i) => {
+                        return <Marker
+                            key={place.org_place_id}
+                            title={place.antipode.name ?? ''}
+                            position={place.antipode.geometry?.location}
+                            icon={{
+                                path: google.maps.SymbolPath.CIRCLE,
+                                strokeColor: "red",
+                                scale: 3
+                            }}
+                        />
                     })}
                 </Map>
             </Box>
