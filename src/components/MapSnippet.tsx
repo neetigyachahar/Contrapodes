@@ -13,7 +13,7 @@ import {
 
 export interface MapSinppetProps {
     disableTitle?: boolean
-    places: any[]
+    places: google.maps.places.PlaceResult[]
 }
 
 const useStyles = makeStyles(({ breakpoints }: Theme) => ({
@@ -37,7 +37,7 @@ const useStyles = makeStyles(({ breakpoints }: Theme) => ({
 }))
 
 const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
-    const mapRef = useRef<any | null>(null)
+    const mapRef = useRef<any| null>(null)
     const classes = useStyles()
     useEffect(() => {
         if (mapRef && mapRef.current) {
@@ -45,14 +45,14 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                 let bounds = new google.maps.LatLngBounds()
                 places.forEach(place => {
                     bounds.extend({
-                        lat: place.geometry.location.lat(),
-                        lng: place.geometry.location.lng()
+                        lat: place.geometry?.location?.lat() ?? 0,
+                        lng: place.geometry?.location?.lng() ?? 0
                     })
                 })
                 mapRef?.current?.map.setCenter(bounds.getCenter())
                 mapRef?.current?.map.fitBounds(bounds)
             } else {
-                mapRef?.current?.map.setCenter(places[0].geometry.location)
+                mapRef?.current?.map.setCenter(places[0]?.geometry?.location)
             }
         }
     }, [places])
@@ -67,10 +67,9 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                         right: 0, bottom: 0
                     }}
                     zoom={8}
-                    initialCenter={places[0]}
                 >
                     {places.map((place, i) => {
-                        return <Marker key={i} position={place.geometry.location} />
+                        return <Marker key={i} position={place.geometry?.location} />
                     })}
                 </Map>
             </Box>
@@ -85,8 +84,8 @@ const MapSnippet: FC<MapSinppetProps> = ({ places, disableTitle = false }) => {
                             <Box>
                                 <Box>{places[0].formatted_address ?? ''}</Box>
                                 <Box>
-                                    {places[0].geometry.location.lat().toFixed(6)},&nbsp;
-                                    {places[0].geometry.location.lng().toFixed(6)}
+                                    {places[0].geometry?.location?.lat().toFixed(6)},&nbsp;
+                                    {places[0].geometry?.location?.lng().toFixed(6)}
                                 </Box>
                             </Box>
                         }

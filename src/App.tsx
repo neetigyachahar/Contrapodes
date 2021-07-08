@@ -6,7 +6,7 @@ import AddPlaces from './Routes/AddPlaces'
 
 import Home from './Routes/Home'
 
-const App: FC = (props: any) => (
+const App: FC = () => (
   <>
     <Route exact path="/AddPlaces" component={AddPlaces} />
     <Route path="/" component={Home} />

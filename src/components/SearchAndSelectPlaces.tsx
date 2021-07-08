@@ -14,8 +14,8 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 
 type Writeable<T> = { -readonly [P in keyof T]: T[P] }
 export interface SearchPlacesProps {
-    newPlaces: any[]
-    addNewPlace: (place: any) => void
+    newPlaces: google.maps.places.PlaceResult[]
+    addNewPlace: (place: google.maps.places.PlaceResult) => void
     setNewPlacesLoading: (loading: boolean) => void
 }
 

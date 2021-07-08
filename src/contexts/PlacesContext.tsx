@@ -1,14 +1,14 @@
 import { FC, useState, createContext } from 'react'
 
 export interface PlacesContextProps {
-    places: any[]
-    updatePlaces: React.Dispatch<React.SetStateAction<any[]>>
+    places: google.maps.places.PlaceResult[]
+    updatePlaces: React.Dispatch<React.SetStateAction<google.maps.places.PlaceResult[]>>
 }
 
 export const PlacesContext = createContext({} as PlacesContextProps)
 
 export const PlacesProvider: FC = ({ children }) => {
-    const [places, updatePlaces] = useState<any[]>([])
+    const [places, updatePlaces] = useState<google.maps.places.PlaceResult[]>([])
     const value = { places, updatePlaces }
 
     return (

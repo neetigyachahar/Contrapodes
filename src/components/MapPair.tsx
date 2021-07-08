@@ -19,8 +19,8 @@ import Ellipsis from '../hoc/Ellipsis'
 import MapSnippet from './MapSnippet'
 
 export interface MapPairProps {
-    place: any,
-    antipode: any
+    place: google.maps.places.PlaceResult,
+    antipode: google.maps.places.PlaceResult
 }
 
 const useStyles = makeStyles(({ spacing, palette, breakpoints }: Theme) => ({
@@ -86,15 +86,15 @@ const MapPair: FC<MapPairProps> = ({ place, antipode }) => {
                     <ListItemText
                         primary={<Typography>
                             <Ellipsis mobileViewOnly >
-                                {place.name}
+                                {place.name ?? ''} 
                             </Ellipsis>
                         </Typography>}
                         {... (!isMobile ? {
                             secondary: <Box>
                                 <Box>{place.formatted_address ?? ''}</Box>
                                 <Box>
-                                    {place.geometry.location.lat().toFixed(6)},&nbsp;
-                                    {place.geometry.location.lng().toFixed(6)}
+                                    {place.geometry?.location?.lat().toFixed(6)},&nbsp;
+                                    {place.geometry?.location?.lng().toFixed(6)}
                                 </Box>
                             </Box>
                         } : {})}
@@ -119,15 +119,15 @@ const MapPair: FC<MapPairProps> = ({ place, antipode }) => {
                     <ListItemText
                         primary={<Typography>
                             <Ellipsis mobileViewOnly >
-                                {antipode.name}
+                                {antipode.name ?? ''}
                             </Ellipsis>
                         </Typography>}
                         {... (!isMobile ? {
                             secondary: <Box>
                                 <Box>{antipode.formatted_address ?? ''}</Box>
                                 <Box>
-                                    {antipode.geometry.location.lat().toFixed(6)},&nbsp;
-                                    {antipode.geometry.location.lng().toFixed(6)}
+                                    {antipode.geometry?.location?.lat().toFixed(6)},&nbsp;
+                                    {antipode.geometry?.location?.lng().toFixed(6)}
                                 </Box>
                             </Box>
                         } : {})}

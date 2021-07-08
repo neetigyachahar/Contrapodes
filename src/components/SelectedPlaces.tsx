@@ -21,10 +21,10 @@ import CloseIcon from '@material-ui/icons/Close'
 import MapSnippet from '../components/MapSnippet'
 
 export interface SelectedPlacesProps {
-    places: any[]
+    places: google.maps.places.PlaceResult[]
     newPlaceDelete: (place_id: string) => void
     newPlacesLoading: boolean,
-    preSelectedPlaces: any[],
+    preSelectedPlaces: google.maps.places.PlaceResult[],
     removePreSelectedPlace: (place_id: string) => void
 }
 
@@ -71,7 +71,7 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     const [openMapDialog, setOpenMapDialog] = useState(false)
-    const [mapDisplayPlace, setMapDisplayPlace] = useState<any[]>([])
+    const [mapDisplayPlace, setMapDisplayPlace] = useState<google.maps.places.PlaceResult[]>([])
 
     const openMapHandler = (placeId: string) => {
         setOpenMapDialog(true)
@@ -96,7 +96,7 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                 {places.map(place => (
                     <Tooltip
                         key={place.place_id}
-                        title={place.formatted_address}
+                        title={place.formatted_address ?? ''}
                         aria-label={place.formatted_address}
                         placement="top"
                     >
@@ -106,11 +106,11 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                             avatar={<Avatar alt={place.name} src={place.icon} />}
                             label={<Typography color="textPrimary">
                                 <Ellipsis mobileViewOnly >
-                                    {place.name}
+                                    {place.name ?? ''}
                                 </Ellipsis>
                             </Typography>}
-                            onClick={() => openMapHandler(place.place_id)}
-                            onDelete={() => newPlaceDelete(place.place_id)}
+                            onClick={() => openMapHandler(place.place_id ?? '')}
+                            onDelete={() => newPlaceDelete(place.place_id ?? '')}
                             variant="outlined"
                         />
                     </Tooltip>
@@ -127,7 +127,7 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                 {preSelectedPlaces.map(place => (
                     <Tooltip
                         key={place.place_id}
-                        title={place.formatted_address}
+                        title={place.formatted_address ?? ''}
                         aria-label={place.formatted_address}
                         placement="top"
                     >
@@ -137,11 +137,11 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                             avatar={<Avatar alt={place.name} src={place.icon} />}
                             label={<Typography color="textPrimary">
                                 <Ellipsis mobileViewOnly >
-                                    {place.name}
+                                    {place.name ?? ''}
                                 </Ellipsis>
                             </Typography>}
-                            onClick={() => openMapHandler(place.place_id)}
-                            onDelete={() => removePreSelectedPlace(place.place_id)}
+                            onClick={() => openMapHandler(place.place_id ?? '')}
+                            onDelete={() => removePreSelectedPlace(place.place_id ?? '')}
                             variant="outlined"
                         />
                     </Tooltip>
@@ -159,7 +159,7 @@ const SelectedPlaces: FC<SelectedPlacesProps> = ({
                     <Typography variant="h6">
                         <Ellipsis mobileViewOnly >
                             {mapDisplayPlace[0] &&
-                                mapDisplayPlace[0].name}
+                                (mapDisplayPlace[0].name ?? '')}
                         </Ellipsis>
                     </Typography>
                     <IconButton aria-label="close" className={classes.closeBtn} onClick={closeMapDisplayHandler}>

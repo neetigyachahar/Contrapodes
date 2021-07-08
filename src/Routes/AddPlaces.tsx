@@ -18,7 +18,7 @@ import deepCopy from 'clone-deep'
 import SelectedPlaces from '../components/SelectedPlaces'
 import { RouteComponentProps } from 'react-router-dom'
 
-export interface AddPlacesProps extends RouteComponentProps<any> {
+export interface AddPlacesProps extends RouteComponentProps {
 
 }
 
@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AddPlaces: FC<AddPlacesProps> = ({ history }) => {
     const classes = useStyles()
     const places = useContext(PlacesContext)
-    const [newPlaces, setNewPlaces] = useState<any[]>([])
+    const [newPlaces, setNewPlaces] = useState<google.maps.places.PlaceResult[]>([])
     const [newPlacesLoading, setNewPlacesLoading] = useState(false)
 
-    const addNewPlaceHandler = (place: any) => {
+    const addNewPlaceHandler = (place: google.maps.places.PlaceResult) => {
         const alreadyAdded = newPlaces.filter(
             newPlace => newPlace.place_id === place.place_id)
         if (alreadyAdded.length) return
