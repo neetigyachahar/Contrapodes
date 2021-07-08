@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles"
-import { FC, useState, useRef } from 'react'
+import { FC, useState, useEffect, useRef } from 'react'
 import PlacesAutocomplete, { Suggestion } from "react-places-autocomplete"
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import {
@@ -43,11 +43,36 @@ const SearchPlaces: FC<SearchPlacesProps> = ({ newPlaces, addNewPlace, setNewPla
         }
         placesServiceRef.current.getDetails(request, (place, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && place) {
-                setNewPlacesLoading(false)
+                let history: any = localStorage.getItem('history')
+                if (history) {
+                    history = JSON.parse(history)
+                    if (history && history.places)
+                        history.places = history.places.concat(place)
+                } else {
+                    history = {
+                        places: [place]
+                    }
+                }
+                history = JSON.stringify(history)
+                localStorage.setItem('history', history)
                 addNewPlace(place)
+                setNewPlacesLoading(false)
             }
         })
     }
+
+    useEffect(() => {
+        let history: any = localStorage.getItem('history')
+        if (history) {
+            history = JSON.parse(history)
+            if (history && history.places)
+                history.places.forEach((place: any) => {
+                    place.geometry.location =
+                        new google.maps.LatLng(place.geometry.location.lat, place.geometry.location.lng)
+                    addNewPlace(place)
+                });
+        }
+    }, [])
 
     return (
         <PlacesAutocomplete
